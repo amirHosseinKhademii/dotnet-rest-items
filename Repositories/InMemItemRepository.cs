@@ -16,5 +16,7 @@ namespace Catalog.Repositories
         public IEnumerable<Item> GetItems() => items;
 
         public Item GetItem(Guid Id) => items.Where(item => item.Id == Id).SingleOrDefault();
+
+        public void CreateItem(Item item) => items.Add(item);
     }
 }

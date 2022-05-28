@@ -3,7 +3,6 @@ using Catalog.Entities;
 using Catalog.Repositories;
 using Microsoft.AspNetCore.Mvc;
 
-
 namespace Catalog.Controllers
 {
     [ApiController]
@@ -31,6 +30,21 @@ namespace Catalog.Controllers
                 return NotFound();
             }
             return item.AsDto();
+        }
+
+        [HttpPost]
+
+        public ActionResult<ItemDto> CreateItem(CreateItemDto body)
+        {
+            Item item = new()
+            {
+                Id = Guid.NewGuid(),
+                Name = body.Name,
+                Price = body.Price,
+                CreatedDate = DateTimeOffset.UtcNow,
+            };
+            repository.CreateItem(item);
+            return CreatedAtAction(nameof(GetItem), new { id = item.Id }, item.AsDto());
         }
     }
 }
