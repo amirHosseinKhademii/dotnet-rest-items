@@ -15,8 +15,6 @@ namespace Catalog.Controllers
             this.repository = repository;
         }
 
-
-
         [HttpGet]
         public IEnumerable<ItemDto> GetItems() => repository.GetItems().Select(item => item.AsDto());
 

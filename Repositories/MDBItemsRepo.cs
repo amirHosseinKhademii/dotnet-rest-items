@@ -1,5 +1,6 @@
 
 using Catalog.Entities;
+using MongoDB.Bson;
 using MongoDB.Driver;
 
 namespace Catalog.Repositories
@@ -10,6 +11,8 @@ namespace Catalog.Repositories
         private const string databaseName = "catalog";
         private const string collectionName = "items";
         private readonly IMongoCollection<Item> itemsCollection;
+
+        private readonly FilterDefinitionBuilder<Item> filterBuilder = Builders<Item>.Filter;
 
         public MDBItemsRepo(IMongoClient client)
         {
@@ -23,22 +26,25 @@ namespace Catalog.Repositories
 
         public void DeleteItem(Guid id)
         {
-            throw new NotImplementedException();
+            itemsCollection.DeleteOne(item => item.Id == id);
         }
 
         public Item GetItem(Guid Id)
+
         {
-            throw new NotImplementedException();
+            var filter = filterBuilder.Eq(item => item.Id, Id);
+            return itemsCollection.Find(filter).SingleOrDefault();
         }
 
         public IEnumerable<Item> GetItems()
         {
-            throw new NotImplementedException();
+            return itemsCollection.Find(new BsonDocument()).ToList();
         }
 
         public void UpdateItem(Item item)
         {
-            throw new NotImplementedException();
+            var filter = filterBuilder.Eq(ex => ex.Id, item.Id);
+            itemsCollection.ReplaceOne(filter, item);
         }
     }
 }
