@@ -24,9 +24,10 @@ namespace Catalog.Repositories
             itemsCollection.InsertOne(item);
         }
 
-        public void DeleteItem(Guid id)
+        public void DeleteItem(Guid Id)
         {
-            itemsCollection.DeleteOne(item => item.Id == id);
+            var filter = filterBuilder.Eq(ex => ex.Id, Id);
+            itemsCollection.DeleteOne(filter);
         }
 
         public Item GetItem(Guid Id)
